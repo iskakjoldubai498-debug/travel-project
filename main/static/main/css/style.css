@@ -3713,3 +3713,54 @@ h1.glitch-text {
         object-fit: cover;
     }
 }
+/* --- АДАПТИВДҮҮ ГАМБУРГЕР МЕНЮ --- */
+@media screen and (max-width: 768px) {
+    .nav-menu {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        position: absolute;
+        top: -1000px; /* Жашыруун турат */
+        left: 0;
+        opacity: 0;
+        transition: all 0.5s ease;
+        background: #111; /* Менюнун фону */
+        padding: 20px 0;
+        z-index: 10;
+    }
+
+    .nav-menu.active {
+        top: 80px; /* Басканда ылдый түшөт */
+        opacity: 1;
+        transition: all 0.5s ease;
+    }
+
+    .nav-menu a {
+        padding: 15px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .menu-toggle {
+        display: block;
+        cursor: pointer;
+    }
+
+    .menu-toggle .bar {
+        width: 25px;
+        height: 3px;
+        margin: 5px auto;
+        display: block;
+        background: white;
+        transition: 0.3s;
+    }
+
+    .desktop-btn {
+        display: none; /* Телефондо чоң баскычты жашыруу */
+    }
+
+    /* Баскычты X белгисине айлантуу */
+    #mobile-menu.is-active .bar:nth-child(2) { opacity: 0; }
+    #mobile-menu.is-active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    #mobile-menu.is-active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+}
