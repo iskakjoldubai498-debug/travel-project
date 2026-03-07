@@ -21,23 +21,29 @@
             {% endfor %}
         </div>
     {% endif %}
+<header>
+    <div class="logo">Travel<span>KG</span></div>
 
-    <header>
-        <div class="logo">Travel<span>KG</span></div>
-        <nav>
-            <a href="{% url 'index' %}">Главная</a>
-            <a href="{% url 'about' %}">О компании</a>
-            <a href="{% url 'tours' %}">Туры</a>
-            <a href="{% url 'contact' %}">Контакты</a>
-        </nav>
+    <div class="menu-toggle" id="mobile-menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </div>
 
+    <nav class="nav-menu">
+        <a href="{% url 'index' %}">Главная</a>
+        <a href="{% url 'about' %}">О компании</a>
+        <a href="{% url 'tours' %}">Туры</a>
+        <a href="{% url 'contact' %}">Контакты</a>
+    </nav>
+
+    <div class="header-btns">
         <button id="theme-toggle" class="theme-btn">
             <span id="theme-icon">🌙</span>
         </button>
-
-        <button class="btn-call" onclick="openModal()">Заказать звонок</button>
-    </header>
-
+        <button class="btn-call desktop-btn" onclick="openModal()">Заказать звонок</button>
+    </div>
+</header>
     <main>
         {% block content %}{% endblock %}
     </main>

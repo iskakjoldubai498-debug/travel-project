@@ -3999,3 +3999,96 @@ body.dark-mode .modal-glass {
         text-align: center;
     }
 }
+/* --- ТЕЛЕФОН ҮЧҮН ТАЗА ДИЗАЙН --- */
+@media screen and (max-width: 768px) {
+    /* Шапканы чакан кылуу */
+    header {
+        justify-content: space-between;
+        padding: 10px 20px;
+        height: 70px;
+        position: relative;
+    }
+
+    /* Менюну экрандын сыртына чыгаруу */
+    .nav-menu {
+        position: fixed;
+        left: -100%; /* Жашыруун */
+        top: 0;
+        flex-direction: column;
+        background: rgba(0, 0, 0, 0.95);
+        width: 100%;
+        height: 100vh;
+        justify-content: center;
+        transition: 0.3s;
+        z-index: 99;
+    }
+
+    /* Меню ачылганда */
+    .nav-menu.active {
+        left: 0;
+    }
+
+    /* Менюдагы шилтемелер */
+    .nav-menu a {
+        margin: 15px 0;
+        font-size: 22px;
+    }
+
+    /* Гамбургер баскычы (Үч сызык) */
+    .menu-toggle {
+        display: block !important;
+        z-index: 100;
+    }
+
+    /* Телефондо чоң баскычты жашыруу */
+    .btn-call.desktop-btn {
+        display: none;
+    }
+
+    /* Башкы беттеги турларды иретке келтирүү */
+    .tour-card {
+        width: 90% !important;
+        margin: 10px auto !important;
+    }
+}
+@media screen and (max-width: 768px) {
+    /* Менюну телефондо жашыруу */
+    .nav-menu {
+        position: fixed;
+        left: -100%;
+        top: 0;
+        flex-direction: column;
+        background: #111;
+        width: 100%;
+        height: 100vh;
+        justify-content: center;
+        align-items: center;
+        transition: 0.3s ease;
+        z-index: 100;
+    }
+
+    .nav-menu.active {
+        left: 0;
+    }
+
+    /* Гамбургер баскычын көрсөтүү */
+    .menu-toggle {
+        display: flex !important;
+        flex-direction: column;
+        cursor: pointer;
+        z-index: 101;
+    }
+
+    .menu-toggle .bar {
+        width: 25px;
+        height: 3px;
+        background: white;
+        margin: 4px 0;
+        transition: 0.4s;
+    }
+
+    /* Телефондо ашыкча баскычты жашыруу */
+    .desktop-btn {
+        display: none !important;
+    }
+}
