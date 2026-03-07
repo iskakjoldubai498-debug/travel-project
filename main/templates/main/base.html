@@ -10,25 +10,24 @@
 </head>
 <body>
 
-    <header>
-        <div class="logo">Travel<span>KG</span></div>
+   <header>
+    <div class="logo">Travel<span>KG</span></div>
 
-        <div class="menu-toggle" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+    <div class="hamburger" id="hamburger">
+        <span id="close-label">ЗАКРЫТЬ</span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
 
-        <nav id="nav-menu">
-            <a href="{% url 'index' %}">Главная</a>
-            <a href="{% url 'about' %}">О компании</a>
-            <a href="{% url 'tours' %}">Туры</a>
-            <a href="{% url 'contact' %}">Контакты</a>
-            <button class="btn-call-mobile" onclick="openModal()">Заказать звонок</button>
-        </nav>
-
-        <button class="btn-call" onclick="openModal()">Заказать звонок</button>
-    </header>
+    <nav class="nav-menu" id="nav-menu">
+        <a href="{% url 'index' %}" onclick="closeMenu()">Башкы бет</a>
+        <a href="{% url 'about' %}" onclick="closeMenu()">Биз жөнүндө</a>
+        <a href="{% url 'tours' %}" onclick="closeMenu()">Турлар</a>
+        <a href="{% url 'contact' %}" onclick="closeMenu()">Байланыш</a>
+        <button class="mobile-btn" onclick="openModal(); closeMenu();">Чалууну буюртмалоо</button>
+    </nav>
+   </header>
 
     <main>
         {% block content %}{% endblock %}
@@ -40,7 +39,6 @@
                 <h2>Travel<span class="red">KG</span></h2>
                 <p>Ар бир саякат — бул жаңы жашоо.</p>
             </div>
-
             <div class="f-stats">
                 <div class="stat-item"><strong>10+</strong> <small>жыл тажрыйба</small></div>
                 <div class="stat-item"><strong>150</strong> <small>кардарлар</small></div>
@@ -50,17 +48,30 @@
     </footer>
 
     <script>
-        function toggleMenu() {
-            const nav = document.getElementById('nav-menu');
-            nav.classList.toggle('active');
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+        const closeLabel = document.getElementById('close-label');
+
+        hamburger.addEventListener('click', () => {
+            const isActive = navMenu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+
+            // Жабуу жазуусун көрсөтүү/жашыруу
+            closeLabel.style.display = isActive ? 'block' : 'none';
+            // Экранды жылдырбоо
+            document.body.style.overflow = isActive ? 'hidden' : 'auto';
+        });
+
+        function closeMenu() {
+            navMenu.classList.remove('active');
+            hamburger.classList.remove('active');
+            closeLabel.style.display = 'none';
+            document.body.style.overflow = 'auto';
         }
 
         function openModal() {
-            document.getElementById('callbackModal').style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.getElementById('callbackModal').style.display = 'none';
+            // Эгер модалдык терезеңиз болсо, бул жерде ачылат
+            console.log("Модалка ачылды");
         }
     </script>
 </body>
