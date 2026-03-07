@@ -5207,3 +5207,43 @@ body.dark-mode .modal-glass {
         box-shadow: 0 10px 20px rgba(255, 75, 92, 0.3);
     }
 }
+/* --- ТИЙҮҮ ЭФФЕКТТЕРИ (TOUCH EFFECTS) --- */
+
+/* Баскычтарды басканда бир аз кичирейтүү (Scale effect) */
+.mobile-btn:active,
+.btn-submit-pro:active,
+.nav-menu a:active {
+    transform: scale(0.95);
+    transition: 0.1s ease;
+    filter: brightness(0.9);
+}
+
+/* Менюдагы шилтемелерге тийгенде фондун бир аз өзгөрүшү */
+.nav-menu a {
+    width: 100%;
+    text-align: center;
+    padding: 15px 0;
+    transition: background 0.3s ease;
+    border-radius: 12px;
+}
+
+.nav-menu a:active {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Модалдык терезенин "Жабуу" (X) баскычын чоңойтуу */
+.close-modal {
+    width: 44px; /* Телефондо бармакка ыңгайлуу өлчөм */
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px !important;
+}
+
+/* Киргизүү талаалары (Input) фокуста болгондо четтеринин жарык болушу */
+.modal-form input:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 10px rgba(255, 75, 92, 0.3);
+    outline: none;
+}
