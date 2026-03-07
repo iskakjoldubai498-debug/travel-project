@@ -38,16 +38,12 @@
             <button class="close-modal" onclick="closeModal()">&times;</button>
             <div class="modal-header">
                 <h2>Биз сизге <span>чалып жатабыз</span></h2>
-                <p>Номериңизди калтырыңыз, биз 5 мүнөттүн ичинде байланышабыз.</p>
+                <p>Номериңизди калтырыңыз, биз байланышабыз.</p>
             </div>
             <form class="modal-form" method="POST" action="{% url 'callback_request' %}">
                 {% csrf_token %}
-                <div class="input-group">
-                    <input type="text" name="name" placeholder="Сиздин атыңыз" required>
-                </div>
-                <div class="input-group">
-                    <input type="tel" name="phone" placeholder="+996 (___) __ __ __" required>
-                </div>
+                <input type="text" name="name" placeholder="Сиздин атыңыз" required>
+                <input type="tel" name="phone" placeholder="+996 (___) __ __ __" required>
                 <button type="submit" class="btn-submit-pro">Жиберүү</button>
             </form>
         </div>
@@ -73,11 +69,6 @@
 
         function closeModal() {
             document.getElementById('callbackModal').style.display = 'none';
-        }
-
-        window.onclick = function(event) {
-            let modal = document.getElementById('callbackModal');
-            if (event.target == modal) { closeModal(); }
         }
     </script>
 </body>
