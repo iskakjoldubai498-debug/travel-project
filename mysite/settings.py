@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # Ушул сапты кошуңуз
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -116,7 +117,13 @@ import os
 
 STATIC_URL = 'static/'
 
-# Django'го статикалык файлдарды кайсы жерден издөө керектигин так айтабыз
+# Сервер файлдарды чогулта турган папка
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Django статикалык файлдарды издей турган папка
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'main', 'static'),
-]
+] # Бул жерде кашааны жабууну унутпаңыз!
+
+# Файлдарды кысып, серверге даярдоо
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
