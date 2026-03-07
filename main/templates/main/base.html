@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-   <header>
+   <header class="main-header">
         <div class="logo">Travel<span>KG</span></div>
 
         <div class="hamburger" id="hamburger">
@@ -19,27 +19,24 @@
         </div>
 
         <nav class="nav-menu" id="nav-menu">
-            <a href="{% url 'index' %}" onclick="closeMenu()">Главная</a>
-            <a href="{% url 'about' %}" onclick="closeMenu()">О компании</a>
-            <a href="{% url 'tours' %}" onclick="closeMenu()">Туры</a>
-            <a href="{% url 'contact' %}" onclick="closeMenu()">Контакты</a>
+            <a href="{% url 'index' %}" onclick="closeMenu()">Башкы бет</a>
+            <a href="{% url 'about' %}" onclick="closeMenu()">Биз жөнүндө</a>
+            <a href="{% url 'tours' %}" onclick="closeMenu()">Турлар</a>
+            <a href="{% url 'contact' %}" onclick="closeMenu()">Байланыш</a>
             <button class="mobile-btn" onclick="openModal(); closeMenu();">Заказать звонок</button>
         </nav>
 
         <button class="btn-call desktop-btn" onclick="openModal()">Заказать звонок</button>
    </header>
 
-    <main>
+    <main class="content-wrapper">
         {% block content %}{% endblock %}
     </main>
 
     <div id="callbackModal" class="modal-overlay">
         <div class="modal-glass">
             <button class="close-modal" onclick="closeModal()">&times;</button>
-            <div class="modal-header">
-                <h2>Биз сизге <span>чалып жатабыз</span></h2>
-                <p>Номериңизди калтырыңыз, биз байланышабыз.</p>
-            </div>
+            <h2>Биз сизге <span>чалып жатабыз</span></h2>
             <form class="modal-form" method="POST" action="{% url 'callback_request' %}">
                 {% csrf_token %}
                 <input type="text" name="name" placeholder="Сиздин атыңыз" required>
