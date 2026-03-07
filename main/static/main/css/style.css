@@ -4092,3 +4092,82 @@ body.dark-mode .modal-glass {
         display: none !important;
     }
 }
+/* --- МОБИЛДИК ТҮЗҮЛҮШ: КООЗ ЖАНА ЗАМАНБАП --- */
+@media screen and (max-width: 768px) {
+    /* Жогору жагы (Header) */
+    header {
+        background: rgba(0, 0, 0, 0.8) !important;
+        backdrop-filter: blur(15px); /* Арты тунарык айнектей болот */
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        height: 65px;
+        padding: 0 20px;
+    }
+
+    .logo {
+        font-size: 22px !important;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .logo span {
+        color: #ff4b5c; /* KG деген жазууну ачык түскө боёйт */
+    }
+
+    /* Гамбургер баскычынын дизайны */
+    .hamburger span {
+        width: 28px;
+        height: 2px;
+        background: linear-gradient(90deg, #ff4b5c, #f9d423); /* Градиент түс */
+        border-radius: 5px;
+    }
+
+    /* Капталдан чыгуучу меню (Drawer) */
+    .nav-menu {
+        background: rgba(10, 10, 15, 0.98) !important;
+        width: 100% !important;
+        gap: 25px;
+    }
+
+    .nav-menu a {
+        font-size: 22px !important;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        transition: 0.3s;
+        color: #fff;
+    }
+
+    .nav-menu a:hover {
+        color: #ff4b5c;
+        transform: scale(1.1);
+    }
+
+    /* "Заказать звонок" баскычы (Менюнун ичиндеги) */
+    .mobile-btn {
+        display: block !important;
+        width: 80%;
+        padding: 15px;
+        background: linear-gradient(45deg, #ff4b5c, #ff6b81);
+        border: none;
+        border-radius: 50px; /* Сопакча кооз форма */
+        color: white;
+        font-weight: 600;
+        box-shadow: 0 10px 20px rgba(255, 75, 92, 0.3);
+        margin-top: 20px;
+    }
+
+    /* Тур карточкаларын телефонго ылайыктоо */
+    .tour-card {
+        width: 90% !important;
+        margin: 20px auto !important;
+        border-radius: 25px !important;
+        overflow: hidden;
+        background: #1a1a1a;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    }
+
+    .tour-image img {
+        height: 250px !important;
+        transition: 0.5s;
+    }
+}

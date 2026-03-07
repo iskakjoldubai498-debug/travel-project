@@ -5,123 +5,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}TravelKG{% endblock %}</title>
-
     <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
-    {% if messages %}
-        <div class="messages-container">
-            {% for message in messages %}
-                <div class="alert alert-success">
-                    {{ message }}
-                    <span class="close-alert" onclick="this.parentElement.style.display='none'">&times;</span>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
-<header>
+   <header>
     <div class="logo">Travel<span>KG</span></div>
 
-    <div class="menu-toggle" id="mobile-menu">
-        <span class="bar"></span>
-        <span class="bar"></span>
-        <span class="bar"></span>
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
     </div>
 
-    <nav class="nav-menu">
-        <a href="{% url 'index' %}">Главная</a>
-        <a href="{% url 'about' %}">О компании</a>
-        <a href="{% url 'tours' %}">Туры</a>
-        <a href="{% url 'contact' %}">Контакты</a>
+    <nav class="nav-menu" id="nav-menu">
+        <a href="{% url 'index' %}" onclick="closeMenu()">Главная</a>
+        <a href="{% url 'about' %}" onclick="closeMenu()">О компании</a>
+        <a href="{% url 'tours' %}" onclick="closeMenu()">Туры</a>
+        <a href="{% url 'contact' %}" onclick="closeMenu()">Контакты</a>
+        <button class="mobile-btn" onclick="openModal(); closeMenu();">Заказать звонок</button>
     </nav>
 
-    <div class="header-btns">
-        <button id="theme-toggle" class="theme-btn">
-            <span id="theme-icon">🌙</span>
-        </button>
-        <button class="btn-call desktop-btn" onclick="openModal()">Заказать звонок</button>
-    </div>
-</header>
+    <button class="btn-call desktop-btn" onclick="openModal()">Заказать звонок</button>
+   </header>
+
     <main>
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="creative-footer">
-        <div class="footer-wrap">
-            <div class="f-brand">
-                <h2>Travel<span class="red">KG</span></h2>
-                <p>Ар бир саякат — бул жаңы жашоо. Биз менен эң сонун көз ирмемдерди тосуп алыңыз.</p>
+    <div id="callbackModal" class="modal-overlay">
+        <div class="modal-glass">
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+            <div class="modal-header">
+                <h2>Биз сизге <span>чалып жатабыз</span></h2>
+                <p>Номериңизди калтырыңыз, биз 5 мүнөттүн ичинде байланышабыз.</p>
             </div>
 
-            <div id="callbackModal" class="modal-overlay">
-                <div class="modal-glass">
-                    <button class="close-modal" onclick="closeModal()">&times;</button>
-                    <div class="modal-header">
-                        <h2>Биз сизге <span>чалып жатабыз</span></h2>
-                        <p>Номериңизди калтырыңыз, биз 5 мүнөттүн ичинде байланышабыз.</p>
-                    </div>
-
-                    <form class="modal-form" method="POST" action="{% url 'callback_request' %}">
-                        {% csrf_token %}
-                        <div class="input-group">
-                            <input type="text" name="name" placeholder="Сиздин атыңыз" required>
-                        </div>
-                        <div class="input-group">
-                            <input type="tel" name="phone" placeholder="+996 (___) __ __ __" required>
-                        </div>
-                        <button type="submit" class="btn-submit-pro">Жиберүү</button>
-                    </form>
+            <form class="modal-form" method="POST" action="{% url 'callback_request' %}">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="text" name="name" placeholder="Сиздин атыңыз" required>
                 </div>
-            </div>
+                <div class="input-group">
+                    <input type="tel" name="phone" placeholder="+996 (___) __ __ __" required>
+                </div>
+                <button type="submit" class="btn-submit-pro">Жиберүү</button>
+            </form>
         </div>
-        <div class="f-copyright">
-            &copy; 2026 TravelKG. Бардык укуктар корголгон.
-        </div>
-    </footer>
+    </div>
 
     <script>
-        // 1. Модалдык терезе (Aчуу/Жабуу)
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+
+        // Гамбургер баскычын басканда менюну ачуу
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Менюну жабуу функциясы
+        function closeMenu() {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+        }
+
+        // Модалдык терезени ачуу
         function openModal() {
             document.getElementById('callbackModal').style.display = 'flex';
         }
 
+        // Модалдык терезени жабуу
         function closeModal() {
             document.getElementById('callbackModal').style.display = 'none';
         }
 
+        // Сыртын басканда жабуу
         window.onclick = function(event) {
             let modal = document.getElementById('callbackModal');
             if (event.target == modal) {
                 closeModal();
             }
         }
-
-        // 2. Түн/Күн режими (Dark Mode)
-        const themeToggle = document.getElementById('theme-toggle');
-        const themeIcon = document.getElementById('theme-icon');
-        const body = document.body;
-
-        // Эгер мурун 'dark' тандалса, аны иштетүү
-        if (localStorage.getItem('theme') === 'dark') {
-            body.classList.add('dark-mode');
-            themeIcon.textContent = '☀️';
-        }
-
-        themeToggle.addEventListener('click', () => {
-            body.classList.toggle('dark-mode');
-
-            if (body.classList.contains('dark-mode')) {
-                localStorage.setItem('theme', 'dark');
-                themeIcon.textContent = '☀️';
-            } else {
-                localStorage.setItem('theme', 'light');
-                themeIcon.textContent = '🌙';
-            }
-        });
-
-
     </script>
 </body>
 </html>
