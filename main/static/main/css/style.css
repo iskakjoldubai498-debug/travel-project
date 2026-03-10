@@ -6069,3 +6069,28 @@ header {
 .tour-card:nth-child(1) { animation-delay: 0.2s; }
 .tour-card:nth-child(2) { animation-delay: 0.4s; }
 .tour-card:nth-child(3) { animation-delay: 0.6s; }
+/* Башкы беттеги тексттин градиенти */
+.hero h1 span {
+    background: linear-gradient(90deg, #ff4d4d, #f9cb28);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+/* Карточкаларды басканда жумшак чоңоюшу */
+.tour-card:hover {
+    transform: scale(1.03);
+    border-color: #ff4d4d;
+    box-shadow: 0 0 25px rgba(255, 77, 77, 0.3);
+}
+
+/* Баскычтарга "дем алган" эффект */
+.btn-call {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0.7); }
+    70% { box-shadow: 0 0 0 15px rgba(255, 77, 77, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 77, 77, 0); }
+}
