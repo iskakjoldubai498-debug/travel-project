@@ -1,103 +1,143 @@
 {% extends 'main/base.html' %}
+
 {% block content %}
-<div class="tour-single">
-    <div class="tour-hero" style="background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('{{ tour.image }}');">
-        <h1>{{ tour.title }}</h1>
-        <div class="tour-quick-info">
-            <span>📍 {{ tour.location }}</span>
-            <span>⏱ {{ tour.duration }}</span>
-            <span>💰 {{ tour.price }} сом</span>
-        </div>
-    </div>
+<style>
+    .premium-tour-page { padding: 40px 0; background: #f1f5f9; }
+    body.dark-mode .premium-tour-page { background: #0f172a; }
 
-    <div class="tour-container">
-        <div class="tour-main-content">
-            <h2>Тур тууралуу толук маалымат</h2>
-            <p class="tour-description">{{ tour.description }}</p>
-            
-            <div class="tour-program">
-                <h3>Турдун программасы</h3>
-                <ul>
-                    <li><strong>1-күн:</strong> Жолугушуу жана трансфер.</li>
-                    <li><strong>2-күн:</strong> Жаратылыш койнунда сейилдөө жана сүрөт сессия.</li>
-                    <li><strong>3-күн:</strong> Кайтуу жана эстелик белектер.</li>
-                </ul>
+    /* Башкы сүрөт */
+    .tour-hero-img {
+        height: 500px;
+        border-radius: 40px;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        margin-bottom: 30px;
+    }
+
+    /* Маалымат карталары */
+    .info-card {
+        background: white;
+        border-radius: 30px;
+        padding: 35px;
+        height: 100%;
+        border: none;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+    body.dark-mode .info-card { background: #1e293b; color: white; }
+
+    /* Timeline Программа */
+    .itinerary-line {
+        position: relative;
+        padding-left: 40px;
+    }
+    .itinerary-line::before {
+        content: '';
+        position: absolute;
+        left: 0; top: 10px; bottom: 10px;
+        width: 2px;
+        background: #0ea5e9;
+    }
+    .itinerary-step {
+        position: relative;
+        margin-bottom: 30px;
+    }
+    .itinerary-step::after {
+        content: '';
+        position: absolute;
+        left: -44px; top: 5px;
+        width: 10px; height: 10px;
+        background: #0ea5e9;
+        border-radius: 50%;
+        box-shadow: 0 0 10px #0ea5e9;
+    }
+
+    /* Кирет/Кирбейт тизмеси */
+    .badge-item {
+        display: inline-block;
+        padding: 10px 20px;
+        border-radius: 15px;
+        margin: 5px;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+    .inc-bg { background: #dcfce7; color: #166534; }
+    .exc-bg { background: #fee2e2; color: #991b1b; }
+    body.dark-mode .inc-bg { background: rgba(22, 101, 52, 0.2); color: #4ade80; }
+    body.dark-mode .exc-bg { background: rgba(153, 27, 27, 0.2); color: #f87171; }
+
+    .price-big {
+        font-size: 2.5rem;
+        font-weight: 800;
+        color: #0ea5e9;
+    }
+</style>
+
+<div class="premium-tour-page">
+    <div class="container">
+        <div class="tour-hero-img" data-aos="zoom-in">
+            {% if tour.image %}
+                <img src="{{ tour.image.url }}" class="w-100 h-100 object-fit-cover" alt="{{ tour.title }}">
+            {% else %}
+                <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba" class="w-100 h-100 object-fit-cover" alt="Kyrgyzstan">
+            {% endif %}
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="info-card mb-4" data-aos="fade-up">
+                    <h1 class="fw-bold display-5 mb-3">{{ tour.title }}</h1>
+                    <p class="text-muted fs-5">{{ tour.description }}</p>
+
+                    <hr class="my-5 opacity-50">
+
+                    <h3 class="fw-bold mb-4"><i class="fas fa-map-signs text-primary me-2"></i> Турдун программасы</h3>
+                    <div class="itinerary-line">
+                        <div class="itinerary-step">
+                            <h5 class="fw-bold">1-күн: Сапардын башталышы</h5>
+                            <p class="text-muted">Бишкектен чыгуу, Боом капчыгайында тамактануу жана локацияга жетип жайгашуу.</p>
+                        </div>
+                        <div class="itinerary-step">
+                            <h5 class="fw-bold">2-күн: Негизги экскурсия</h5>
+                            <p class="text-muted">Эң кооз жерлерге саякат, гид менен сейилдөө жана кечки от жагуу.</p>
+                        </div>
+                        <div class="itinerary-step">
+                            <h5 class="fw-bold">3-күн: Кайтуу</h5>
+                            <p class="text-muted">Эркин убакыт, сувенирлер жана Бишкекке кайтуу.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div class="booking-sidebar">
-            <div class="booking-card">
-                <h3>Бул турду ээлөө</h3>
-                <p>Баасы: <strong>{{ tour.price }} сом</strong></p>
-                <form>
-                    <input type="text" placeholder="Атыңыз" required>
-                    <input type="tel" placeholder="Телефон номериңиз" required>
-                    <button type="submit" class="btn-book">Бронь жасоо</button>
-                </form>
-                <p class="small-note">* Сизге оператор 15 мүнөттө чалат</p>
+            <div class="col-lg-4">
+                <div class="info-card sticky-top" style="top: 100px;" data-aos="fade-left">
+                    <div class="text-center mb-4">
+                        <p class="text-muted mb-0">Турдун баасы:</p>
+                        <h2 class="price-big">{{ tour.price }} сом</h2>
+                    </div>
+
+                    <div class="mb-4">
+                        <h6 class="fw-bold mb-3">Баага кирет:</h6>
+                        <div class="badge-item inc-bg"><i class="fas fa-check me-2"></i>Транспорт</div>
+                        <div class="badge-item inc-bg"><i class="fas fa-check me-2"></i>Гид</div>
+                        <div class="badge-item inc-bg"><i class="fas fa-check me-2"></i>Тамак-аш</div>
+
+                        <h6 class="fw-bold mb-3 mt-4">Кирбейт:</h6>
+                        <div class="badge-item exc-bg"><i class="fas fa-times me-2"></i>Ат минүү</div>
+                        <div class="badge-item exc-bg"><i class="fas fa-times me-2"></i>Жеке чыгымдар</div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <a href="https://wa.me/996553966070" target="_blank" class="btn btn-success py-3 rounded-4 fw-bold shadow">
+                            <i class="fab fa-whatsapp me-2"></i> WhatsApp аркылуу жазылуу
+                        </a>
+                        <button class="btn btn-primary py-3 rounded-4 fw-bold" data-bs-toggle="modal" data-bs-target="#callModal">
+                            <i class="fas fa-phone-alt me-2"></i> Номер калтырыныз
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-<style>
-    .tour-hero { height: 500px; display: flex; flex-direction: column; justify-content: center; align-items: center; color: white; background-size: cover; background-position: center; text-align: center; }
-    .tour-hero h1 { font-size: 3rem; margin-bottom: 20px; }
-    .tour-quick-info span { margin: 0 15px; font-size: 1.2rem; background: rgba(255,255,255,0.2); padding: 5px 15px; border-radius: 20px; }
-    
-    .tour-container { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; padding: 50px 10%; background: #f9f9f9; }
-    .tour-main-content { background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-    .tour-description { font-size: 1.1rem; line-height: 1.8; color: #555; margin-bottom: 30px; }
-    
-    .booking-card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); position: sticky; top: 100px; }
-    .booking-card input { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ddd; border-radius: 8px; }
-    .btn-book { width: 100%; background: #ff4d4d; color: white; border: none; padding: 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-    .btn-book:hover { background: #e63939; }
-</style>
-{% endblock %}
-{% extends 'main/base.html' %}
-{% load static %}
-
-{% block content %}
-<section class="tour-page">
-    <div class="container">
-        <div class="tour-header" style="background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('{{ tour.image_url }}');">
-            <div class="header-info">
-                <span class="loc-tag">📍 {{ tour.location }}</span>
-                <h1>{{ tour.title }}</h1>
-            </div>
-        </div>
-
-        <div class="tour-grid-detail">
-            <div class="tour-main-info">
-                <h2>Саякат жөнүндө маалымат</h2>
-                <p class="description">{{ tour.description }}</p>
-
-                <div class="info-cards">
-                    <div class="i-card"><span>💰 Баасы:</span> <strong>{{ tour.price }} сом</strong></div>
-                    <div class="i-card"><span>✨ Өзгөчөлүгү:</span> <strong>{{ tour.features }}</strong></div>
-                </div>
-            </div>
-
-            <div class="tour-sidebar">
-                <div class="booking-card">
-                    <h3>Орун ээлеп коюңуз</h3>
-                    <p>Биз менен байланышып, саякатка жазылыңыз!</p>
-                    <a href="tel:+996770123456" class="btn-call">Чалсаңыз болот</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<style>
-    .tour-header { height: 500px; border-radius: 30px; background-size: cover; background-position: center; display: flex; align-items: flex-end; padding: 50px; margin-top: 20px; color: white; }
-    .loc-tag { background: #ff4d6d; padding: 5px 15px; border-radius: 50px; font-weight: bold; }
-    .tour-grid-detail { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; margin-top: 40px; }
-    .description { font-size: 1.2rem; line-height: 1.8; color: #444; }
-    .info-cards { display: flex; gap: 20px; margin-top: 30px; }
-    .i-card { background: #f0f2f5; padding: 20px; border-radius: 15px; flex: 1; }
-    .booking-card { background: white; padding: 30px; border-radius: 25px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); border: 1px solid #eee; position: sticky; top: 100px; }
-    .btn-call { display: block; background: #ff4d6d; color: white; text-align: center; padding: 15px; border-radius: 50px; text-decoration: none; font-weight: bold; margin-top: 20px; }
-</style>
 {% endblock %}

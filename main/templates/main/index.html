@@ -2,47 +2,267 @@
 {% load static %}
 
 {% block content %}
-<section class="hero-ultra-lux">
-    <div class="bg-layer">
-        <img src="https://images.unsplash.com/photo-1544085311-11a028465b0c?q=80&w=2000" class="parallax-img" alt="Kyrgyzstan Nature">
-        <div class="dimmer"></div>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+    /* 1. Typography & General Styles */
+    .index-page {
+        font-family: 'Open Sans', sans-serif;
+        overflow-x: hidden;
+    }
+
+    .text-gradient {
+        background: linear-gradient(45deg, #ffffff, #00d4ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 900;
+        text-shadow: none !important;
+    }
+
+    .section-title {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 800;
+        letter-spacing: -1px;
+    }
+
+    /* 2. Hero Section */
+    .hero-wrapper {
+        position: relative;
+        height: 75vh;
+        margin: 15px;
+        border-radius: 35px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: url('https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=2071&auto=format&fit=crop') center/cover no-repeat;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+
+    .hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.7));
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 5;
+        text-align: center;
+        color: white;
+        padding: 0 20px;
+    }
+
+    .hero-content h1 {
+        font-size: clamp(2.5rem, 8vw, 5.5rem);
+        line-height: 1;
+        margin-bottom: 20px;
+    }
+
+    .hero-content p {
+        font-weight: 400;
+        opacity: 0.9;
+        font-size: clamp(1rem, 2vw, 1.3rem);
+        max-width: 600px;
+        margin: 0 auto 30px;
+    }
+
+    /* 3. Stats Section (Glassmorphism) */
+    .stats-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-top: -50px;
+        position: relative;
+        z-index: 10;
+        padding: 0 30px;
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .stat-box {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 20px 10px;
+        border-radius: 25px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    body.dark-mode .stat-box {
+        background: rgba(30, 30, 30, 0.9);
+        border-color: rgba(255,255,255,0.05);
+        color: white;
+    }
+
+    .stat-box h2 {
+        font-family: 'Montserrat', sans-serif;
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        font-weight: 900;
+        color: #0d6efd;
+        margin: 0;
+    }
+
+    .stat-box small {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        letter-spacing: 1px;
+        color: #777;
+    }
+
+    /* 4. Services */
+    .service-card {
+        padding: 30px 20px;
+        border-radius: 25px;
+        background: white;
+        border: 1px solid #eee;
+        transition: 0.3s;
+        text-align: center;
+    }
+
+    body.dark-mode .service-card {
+        background: #1e1e1e;
+        border-color: #333;
+    }
+
+    .service-card i {
+        font-size: 2rem;
+        margin-bottom: 15px;
+        display: block;
+        background: linear-gradient(45deg, #0d6efd, #00d4ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    /* 5. Tour Cards */
+    .tour-preview-card {
+        border-radius: 30px;
+        height: 400px;
+        position: relative;
+        overflow: hidden;
+        border: none;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .tour-preview-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(transparent, rgba(0,0,0,0.85));
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 25px;
+        color: white;
+    }
+
+    .price-badge {
+        background: #ffc107;
+        color: #000;
+        padding: 5px 15px;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 0.8rem;
+        width: fit-content;
+        margin-bottom: 10px;
+    }
+
+    /* 6. Responsive Fixes */
+    @media (max-width: 768px) {
+        .hero-wrapper { height: 60vh; border-radius: 25px; margin: 10px; }
+        .stats-container { gap: 10px; padding: 0 15px; margin-top: -30px; }
+        .stat-box { padding: 15px 5px; border-radius: 18px; }
+    }
+</style>
+
+<div class="index-page">
+    <div class="hero-wrapper" data-aos="zoom-out">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <span class="text-uppercase fw-bold mb-3 d-block" style="letter-spacing: 3px; font-size: 0.8rem; color: #00d4ff;">Welcome to Kyrgyzstan</span>
+            <h1 class="text-gradient" data-aos="fade-up" data-aos-delay="200">ЧЕКСИЗ <br>СУЛУУЛУК</h1>
+            <p data-aos="fade-up" data-aos-delay="400">Биз менен бирге тоолордун койнуна жана тунук көлдөрдүн жээгине саякаттаңыз.</p>
+            <div data-aos="fade-up" data-aos-delay="600">
+                <a href="{% url 'tours_page' %}" class="btn btn-primary btn-lg rounded-pill px-5 fw-bold shadow-lg">ТУРЛАРДЫ КӨРҮҮ</a>
+            </div>
+        </div>
     </div>
 
-    <div class="container hero-flex">
-        <div class="hero-text-pro">
-            <div class="reveal-tag"><span>New</span> Эксклюзивдүү багыттар 2026</div>
-            <h1 class="glitch-title">Кыргызстандын <br><span class="cyan-glow">Берметтери</span></h1>
-            <p class="hero-description">
-                Жөнөкөй эс алып гана тим болбостон, жашооңуздун эң табышмактуу барагын ачыңыз.
-                Биз менен Көл-Суунун аскаларына жана Соң-Көлдүн жылдыздарына саякаттаңыз.
-            </p>
-            <div class="action-row">
-                <a href="{% url 'tours' %}" class="btn-neon-lux">
-                    <span>Турларды көрүү</span>
-                    <div class="dot"></div>
-                </a>
+    <div class="stats-container">
+        <div class="stat-box" data-aos="fade-up" data-aos-delay="100">
+            <h2>50+</h2>
+            <small>Турлар</small>
+        </div>
+        <div class="stat-box" data-aos="fade-up" data-aos-delay="200">
+            <h2>5к+</h2>
+            <small>Кардарлар</small>
+        </div>
+        <div class="stat-box" data-aos="fade-up" data-aos-delay="300">
+            <h2>4.9</h2>
+            <small>Рейтинг</small>
+        </div>
+    </div>
+
+    <div class="container py-5">
+        <div class="row g-3 my-5">
+            <div class="col-6 col-md-4" data-aos="zoom-in">
+                <div class="service-card shadow-sm">
+                    <i class="fas fa-mountain"></i>
+                    <h6 class="fw-bold mb-0">Тоо турлары</h6>
+                </div>
+            </div>
+            <div class="col-6 col-md-4" data-aos="zoom-in" data-aos-delay="100">
+                <div class="service-card shadow-sm">
+                    <i class="fas fa-camera-retro"></i>
+                    <h6 class="fw-bold mb-0">Фото сессия</h6>
+                </div>
+            </div>
+            <div class="col-12 col-md-4" data-aos="zoom-in" data-aos-delay="200">
+                <div class="service-card shadow-sm">
+                    <i class="fas fa-shield-alt"></i>
+                    <h6 class="fw-bold mb-0">Коопсуздук</h6>
+                </div>
             </div>
         </div>
 
-        <div class="hero-cards-stack">
-            <a href="{% url 'tours' %}" class="glass-card card-1" style="text-decoration: none; color: inherit;">
-                <img src="https://central-asia.live/_next/image?url=https%3A%2F%2Fcentral-asia.live%2Fuploads%2Fkel-suu1.jpg&w=3840&q=75    " alt="Көл-Суу керемети">
-                <div class="card-info">
-                    <h4>Көл-Суу керемети</h4>
-                    <span>1500 сом</span>
-                    <p style="color: #00d4ff; font-size: 0.8rem; margin-top: 5px;">Кененирээк →</p>
-                </div>
-            </a>
+        <div class="d-flex justify-content-between align-items-end mb-4 px-2">
+            <div>
+                <h6 class="text-primary fw-bold small text-uppercase mb-0">Тандалган</h6>
+                <h2 class="section-title m-0">Популярдуу турлар</h2>
+            </div>
+            <a href="{% url 'tours_page' %}" class="fw-bold text-decoration-none small">БААРЫН КӨРҮҮ <i class="fas fa-arrow-right ms-1"></i></a>
+        </div>
 
-            <a href="{% url 'tours' %}" class="glass-card card-2" style="text-decoration: none; color: inherit;">
-                <img src="https://cdn-0.aki.kg/st_runews/9/339739.1.1517834539.jpg" alt="Соң-Көл жайлоосу">
-                <div class="card-info">
-                    <h4>Соң-Көл жайлоосу</h4>
-                    <span>3000 сом</span>
-                    <p style="color: #00d4ff; font-size: 0.8rem; margin-top: 5px;">Кененирээк →</p>
+        <div class="row g-4">
+            {% for tour in tours|slice:":3" %}
+            <div class="col-md-4" data-aos="fade-up" data-aos-delay="{{ forloop.counter }}00">
+                <div class="tour-preview-card">
+                    {% if tour.image %}
+                        <img src="{{ tour.image.url }}" class="w-100 h-100" style="object-fit: cover;" alt="{{ tour.title }}">
+                    {% else %}
+                        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b" class="w-100 h-100" style="object-fit: cover;" alt="Default">
+                    {% endif %}
+                    <div class="tour-preview-overlay">
+                        <div class="price-badge">{{ tour.price }} сом</div>
+                        <h4 class="fw-bold mb-2">{{ tour.title }}</h4>
+                        <a href="{% url 'tour_detail' tour.id %}" class="text-white text-decoration-none small opacity-75">Кененирээк билүү →</a>
+                    </div>
                 </div>
-            </a>
+            </div>
+            {% endfor %}
         </div>
     </div>
-</section>
+
+    <div class="container mb-5">
+        <div class="p-5 rounded-5 bg-dark text-white text-center shadow-lg position-relative overflow-hidden" data-aos="flip-up">
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(45deg, #0d6efd22, transparent);"></div>
+            <h2 class="section-title mb-4 position-relative">Саякатка даярсызбы?</h2>
+            <a href="https://wa.me/996553966070" class="btn btn-primary btn-lg rounded-pill px-5 fw-bold position-relative">БИЗГЕ ЖАЗЫҢЫЗ</a>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

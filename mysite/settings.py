@@ -28,26 +28,30 @@ SECRET_KEY = 'django-insecure-2z*&rg!%vl03^jh=ns6-y1k$u)=$3rgdx%fmh#a2%wjhr)z7j4
 DEBUG = True
 
 # 2. Хостторду аныктайбыз
-ALLOWED_HOSTS = ['travel-kg-5.onrender.com', 'localhost', '127.0.0.1', '10.0.0.0/8'] # Render ички тармагы үчүн 10.0.0.0/8 кошуп коюу сунушталат
+# Боштукту (пробелди) алып салыңыз
+ALLOWED_HOSTS = ['*']
 
 # 3. CSRF коопсуздугу
 CSRF_TRUSTED_ORIGINS = ['https://travel-kg-5.onrender.com']
 
 # Application definition
 INSTALLED_APPS = [
+    'cloudinary_storage',          # 1. Эң биринчи ушул турушу керек
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'main',
+    'django.contrib.staticfiles', # 2. Бул ар дайым 'cloudinary_storage' дан кийин
+    'cloudinary',                 # 3. Бул жерге кошсоң болот
+    'main',                       # 4. Сенин колдонмоң (app)
 ] # <--- Кашаа жабылганын текшериңиз
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Ушул сапты кошуңуз
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware', # 1. Сессияны ачат
+    'django.middleware.locale.LocaleMiddleware',           # 2. Тилди аныктайт (УШУЛ ЖЕРГЕ КОШУҢУЗ)
+    'django.middleware.common.CommonMiddleware',           # 3. Калган иштерди жасайт
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -121,16 +125,24 @@ USE_TZ = True
 
 
 import os
+from pathlib import Path
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Сенин азыркы кодуң:
 STATIC_URL = 'static/'
-
-# Сервер файлдарды чогулта турган папка
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# Django статикалык файлдарды издей турган папка
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'main', 'static'),
-] # Бул жерде кашааны жабууну унутпаңыз!
+if not DEBUG:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
-# Файлдарды кысып, серверге даярдоо
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+MEDIA_URL = '/media/'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# --- МУНУ СӨЗСҮЗ ЭҢ АЯГЫНА КОШ ---
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dffggv57z',
+    'API_KEY': '159731443338952',
+    'API_SECRET': 'БУЛ_ЖЕРГЕ_ӨЗҮҢДҮН_API_SECRET_КОДУҢДУ_КОЙ' # Жылдызчаларды ачып көчүрүп алган кодуң
+}

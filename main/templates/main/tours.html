@@ -1,137 +1,190 @@
 {% extends 'main/base.html' %}
-{% load static %}
 
 {% block content %}
-<section class="premium-tours-lux">
-    <div class="glow-bg-tours"></div>
-    <div class="container">
-        <div class="section-head-lux">
-            <div class="badge-mini">Travel Secrets</div>
-            <h1>Кыргызстандын <span>Берметтери</span></h1>
-            <p>Жөнөкөй эс алуу эмес, сиздин тарыхыңыздын жаңы бөлүмү</p>
-        </div>
-
-        <div class="tours-grid-lux" id="tours-container">
-            </div>
-    </div>
-</section>
-
-<div id="detailsModal" class="modal-pay-overlay">
-    <div class="modal-pay-glass details-box">
-        <button class="close-pay" onclick="closeDetails()">&times;</button>
-        <div id="details-content"></div>
-    </div>
-</div>
-
-<div id="paymentModal" class="modal-pay-overlay">
-    <div class="modal-pay-glass">
-        <button class="close-pay" onclick="closePayment()">&times;</button>
-        <div class="pay-header">
-            <h2>Төлөмдү <span>тастыктоо</span></h2>
-            <p id="tour-name-display" style="color: #94a3b8; margin-top: 5px;"></p>
-        </div>
-        <form id="checkout-form" class="pay-form">
-            <div class="input-pay-group">
-                <label>Картанын номери</label>
-                <input type="text" id="card-num" placeholder="0000 0000 0000 0000" maxlength="19" required>
-            </div>
-            <div class="input-pay-row" style="display: flex; gap: 15px;">
-                <div class="input-pay-group" style="flex: 1;">
-                    <label>Мөөнөтү</label>
-                    <input type="text" placeholder="MM/YY" maxlength="5" required>
-                </div>
-                <div class="input-pay-group" style="flex: 1;">
-                    <label>CVV</label>
-                    <input type="password" placeholder="***" maxlength="3" required>
-                </div>
-            </div>
-            <button type="submit" class="btn-pay-submit">Төлөө: <span id="tour-price-display"></span> сом</button>
-        </form>
-    </div>
-</div>
-
-<script>
-    // 12 ТУРДУН МААЛЫМАТТАРЫ
-    const allTours = [
-        { id: 'sary-chelek', title: "Сары-Челек көлү", price: 3000, img: "https://central-asia.live/uploads/tours/sary-chelek-view-extended-tour.jpg", desc: "Сары-Челек — Кыргызстандын эң кооз коруктарынын бири. Бул жерде 7 көл бар, алардын эң чоңу Сары-Челек. Көл жаңгак жана мөмө-жемиш токойлору менен курчалган.", feat: ["⏱ 2 күн", "🏔 Бийиктик: 1878м", "📸 Фото-тур", "🏕 Лагерь"] },
-        { id: 'son-kul', title: "Соң-Көл жайлоосу", price: 3500, img: "https://cdn-0.aki.kg/st_runews/9/339739.1.1517834539.jpg", desc: "Соң-Көл — бийик тоолуу жайлоо. Бул жерде сиз көчмөн маданиятын көрүп, боз үйдө түнөп, нукура кымыз иче аласыз.", feat: ["⏱ 3 күн", "🐎 Ат тур", "🥛 Нукура кымыз", "🌌 Жылдыздуу асман"] },
-        { id: 'kel-suu', title: "Көл-Суу керемети", price: 1500, img: "https://www.advantour.com/img/kyrgyzstan/lakes/kel-suu-lake.jpg", desc: "Көл-Суу — Нарындагы уникалдуу көл. Ал бийик аскалардын арасында жайгашкан. Көлдүн өңү аба ырайына жараша өзгөрүп турат.", feat: ["⏱ 2 күн", "🛶 Кайык тебүү", "🏔 Бийик тоо", "🛂 Чек ара аймагы"] },
-        { id: 'ala-archa', title: "Ала-Арча капчыгайы", price: 1200, img: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/09/a4/8d/63/ala-archa-gorge.jpg?w=1200&h=1200&s=1", desc: "Бишкектен 40 км алыстыктагы улуттук парк. Шаркыратмалар, карагайлар жана кар баскан чокулар сизди күтөт.", feat: ["⏱ 1 күн", "🚶 Хайкинг", "🌲 Токой", "🏔 Таза аба"] },
-        { id: 'jeti-oguz', title: "Жети-Өгүз керемети", price: 2500, img: "https://open.kg/uploads/posts/2018-08/1534773593_screenshot_8.webp", desc: "Ысык-Көлдөгү кызыл аскалар. Жети-Өгүз жана Жарылган жүрөк аскалары өздөрүнүн легендалары менен белгилүү.", feat: ["⏱ 1 күн", "📜 Легендалар", "🔴 Кызыл аска", "🌊 Көл жээги"] },
-        { id: 'arslanbob', title: "Арсланбаб токойлору", price: 4000, img: "https://kg24.news/wp-content/uploads/2023/12/arslanbobskaya-dolina.jpg.webp", desc: "Дүйнөдөгү эң чоң табигый жаңгак токою. Шаркыратмалар жана кооз жаратылыш Түштүк Кыргызстандын сыймыгы.", feat: ["⏱ 3 күн", "🌰 Жаңгак токою", "🌊 Шаркыратма", "🏔 Тоо пейзажы"] },
-        { id: 'tash-rabat', title: "Таш-Рабат", price: 5000, img: "https://www.advantour.com/img/kyrgyzstan/images/tash-rabat.jpg", desc: "15-кылымга таандык кербен-сарай. Жибек Жолундагы саякатчылар үчүн курулган тарыхый эстелик.", feat: ["⏱ 2 күн", "📜 Тарых", "🧱 Архитектура", "🏔 Нарын тоолору"] },
-        { id: 'sulayman-too', title: "Сулайман-Тоо (Ош)", price: 1000, img: "https://caravan-info.kg/netcat_files/generated/17/27/1000x500/24239/cf10b2b8ca679d5ef79776490c2a18f3.jpg?crop=0%3A0%3A0%3A0&hash=240a529b6b2cb45213eeb061393802ed&resize_mode=1&wm_m=0", desc: "ЮНЕСКОнун тизмесине кирген Ош шаарынын ортосундагы ыйык тоо. Анын ичинде музей жана байыркы сүрөттөр бар.", feat: ["⏱ 1 күн", "🏛 Музей", "🕌 Ыйык жер", "🏙 Ош шаары"] },
-        { id: 'padysha-ata', title: "Падыша-Ата коругу", price: 2800, img: "https://dwc.kg/wp-content/uploads/2023/05/portfolio_f64a1cbc90-748x960.jpg", desc: "Арча токойлоруна бай корук. Бул жерде таза суулар жана тынч жаратылыш сиздин эс алууңузду камсыздайт.", feat: ["⏱ 2 күн", "🌳 Корук", "🏔 Тынчтык", "📸 Фото-тур"] },
-        { id: 'grigorev', title: "Григорьев капчыгайы", price: 1800, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzGR9Lbn0EBH9NJG08cw43KoVa78o6yeERPQ&s", desc: "Ысык-Көлдөгү эң кооз капчыгайлардын бири. Жашыл шалбаалар, боз үйлөр жана тоо суусунун жээгиндеги эс алуу.", feat: ["⏱ 1 күн", "🏕 Пикник", "🌊 Тоо суусу", "🐎 Ат минүү"] },
-        { id: 'skazka', title: '"Сказка" каньону', price: 2200, img: "https://central-asia.live/_next/image?url=https%3A%2F%2Fcentral-asia.live%2Fuploads%2Fskazka-canyons.jpeg&w=3840&q=75", desc: "Кызыл топурактан түзүлгөн жомокко окшогон каньон. Сүрөткө түшүү үчүн эң сонун уникалдуу жер.", feat: ["⏱ 1 күн", "🏜 Марс көрүнүшү", "🟠 Кызыл кум", "🌊 Көл жээги"] },
-        { id: 'shah-fazil', title: "Шах-Фазиль", price: 3200, img: "https://too.kg/wp-content/uploads/1439983991_img_0106-1024x624.jpg", desc: "Орто кылымга таандык архитектуралык комплекс. Тарыхый оймо-чиймелер жана мавзолейлер сакталган жай.", feat: ["⏱ 1 күн", "🏛 Тарых", "🏺 Оймолор", "📜 Ислам тарыхы"] }
-    ];
-
-    // КАРТОЧКАЛАРДЫ АВТОМАТТЫК ТҮРДӨ ЧЫГАРУУ
-    const container = document.getElementById('tours-container');
-    allTours.forEach(tour => {
-        container.innerHTML += `
-            <div class="lux-card">
-                <div class="card-inner">
-                    <div class="card-image-box">
-                        <img src="${tour.img}" alt="${tour.title}">
-                        <div class="price-tag-lux">${tour.price} сом</div>
-                    </div>
-                    <div class="card-info-lux">
-                        <h3>${tour.title}</h3>
-                        <div class="card-btns">
-                            <a href="javascript:void(0)" class="btn-details" onclick="openDetails('${tour.id}')">Кененирээк</a>
-                            <a href="javascript:void(0)" class="btn-lux-card" onclick="openPayment('${tour.title}', ${tour.price})">Брондоо</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-    });
-
-    // ФУНКЦИЯЛАР
-    function openDetails(id) {
-        const tour = allTours.find(t => t.id === id);
-        const featuresHtml = tour.feat.map(f => `<div class="feature-item">✔ ${f}</div>`).join('');
-
-        document.getElementById('details-content').innerHTML = `
-            <img src="${tour.img}" class="details-img">
-            <div class="details-body">
-                <h2>${tour.title}</h2>
-                <p>${tour.desc}</p>
-                <div class="details-features">${featuresHtml}</div>
-                <button class="btn-pay-submit" style="margin-top: 25px;" onclick="closeDetails(); openPayment('${tour.title}', ${tour.price})">Азыр брондоо</button>
-            </div>
-        `;
-        document.getElementById('detailsModal').style.display = 'flex';
+<style>
+    /* 1. Жалпы барактын фону */
+    .tours-page {
+        background-color: #f4f7f6;
+        padding: 50px 0;
+        transition: background-color 0.4s ease, color 0.4s ease;
+        min-height: 100vh;
     }
 
-    function closeDetails() { document.getElementById('detailsModal').style.display = 'none'; }
-
-    function openPayment(name, price) {
-        document.getElementById('paymentModal').style.display = 'flex';
-        document.getElementById('tour-name-display').innerText = name;
-        document.getElementById('tour-price-display').innerText = price.toLocaleString();
+    body.dark-mode .tours-page {
+        background-color: #121212 !important;
     }
 
-    function closePayment() { document.getElementById('paymentModal').style.display = 'none'; }
+    /* 2. Башкы текст */
+    .section-title {
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        position: relative;
+        margin-bottom: 60px;
+        color: #222;
+        transition: color 0.4s ease;
+    }
 
-    window.onclick = function(event) {
-        if (event.target.classList.contains('modal-pay-overlay')) {
-            closeDetails();
-            closePayment();
+    body.dark-mode .section-title {
+        color: #ffffff !important;
+    }
+
+    .section-title::after {
+        content: '';
+        width: 80px;
+        height: 4px;
+        background: #0d6efd;
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* 3. Тур карточкалары */
+    .tour-card-wrap {
+        position: relative;
+        border-radius: 25px;
+        overflow: hidden;
+        height: 450px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border: none;
+        background: #fff;
+    }
+
+    body.dark-mode .tour-card-wrap {
+        background-color: #1e1e1e !important;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    }
+
+    .tour-card-wrap:hover {
+        transform: translateY(-15px);
+        box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+    }
+
+    .tour-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+
+    .tour-card-wrap:hover .tour-img {
+        transform: scale(1.1);
+    }
+
+    /* 4. Градиент жана Текст */
+    .card-overlay {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 70%;
+        background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 30px;
+        color: white;
+    }
+
+    body.dark-mode .card-overlay {
+        background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.5) 60%, transparent 100%);
+    }
+
+    .tour-price {
+        background: #ffc107;
+        color: #000;
+        padding: 6px 18px;
+        border-radius: 50px;
+        font-weight: 800;
+        font-size: 0.95rem;
+        width: fit-content;
+        margin-bottom: 12px;
+        box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+    }
+
+    .tour-name {
+        font-size: 1.7rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+        line-height: 1.2;
+    }
+
+    /* 5. Кененирээк баскычы */
+    .btn-detail {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.4s ease;
+        background: #0d6efd;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 50px;
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        display: inline-block;
+        margin-top: 15px;
+        text-align: center;
+    }
+
+    .tour-card-wrap:hover .btn-detail {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .btn-detail:hover {
+        background: #0b5ed7;
+        color: white;
+    }
+
+    /* 6. Реактивдүүлүк */
+    @media (max-width: 768px) {
+        .tours-page { padding: 30px 0; }
+        .tour-card-wrap { height: 380px; }
+        .tour-name { font-size: 1.4rem; }
+        .btn-detail {
+            opacity: 1;
+            transform: translateY(0);
+            padding: 8px 20px;
+            font-size: 0.85rem;
         }
     }
+</style>
 
-    document.getElementById('checkout-form').onsubmit = function(e) {
-        e.preventDefault();
-        const btn = e.target.querySelector('.btn-pay-submit');
-        btn.innerText = "Төлөм аткарылууда...";
-        setTimeout(() => {
-            alert("Төлөм ийгиликтүү өттү! Сиздин брондооңуз тастыкталды.");
-            closePayment();
-            btn.innerText = "Төлөө";
-        }, 2000);
-    }
-</script>
+<div class="tours-page">
+    <div class="container">
+        <h2 class="text-center section-title" data-aos="fade-down">Биздин Турлар</h2>
+
+        <div class="row g-4">
+            {% for tour in tours %}
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ forloop.counter }}00">
+                <div class="card tour-card-wrap shadow-sm">
+                    {% if tour.image %}
+                        <img src="{{ tour.image.url }}" class="tour-img" alt="{{ tour.title }}">
+                    {% else %}
+                        <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470" class="tour-img" alt="Default">
+                    {% endif %}
+
+                    <div class="card-overlay">
+                        <div class="tour-price">{{ tour.price }} сом</div>
+                        <h3 class="tour-name">{{ tour.title }}</h3>
+                        <p class="small text-light opacity-75 mb-0">
+                            <i class="fas fa-map-marker-alt me-1"></i> {{ tour.description|truncatewords:7 }}
+                        </p>
+                        <a href="{% url 'tour_detail' tour.id %}" class="btn-detail shadow">Кененирээк</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5" data-aos="zoom-in">
+                <div class="p-5 border rounded-3 bg-light d-inline-block">
+                    <i class="fas fa-suitcase-rolling fa-3x text-muted mb-3"></i>
+                    <h4 class="text-muted">Азырынча турлар кошула элек...</h4>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -1,26 +1,24 @@
 from django.db import models
 
-
+# 1. Биринчи Тур модели болушу керек
 class Tour(models.Model):
     title = models.CharField(max_length=200, verbose_name="Турдун аталышы")
-    # Slug издөө системалары (SEO) үчүн керек: /tours/kol-suu-trip/
-    slug = models.SlugField(unique=True, null=True, blank=True)
-    location = models.CharField(max_length=100, verbose_name="Жайгашкан жери")
+    description = models.TextField(verbose_name="Маалымат")
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Баасы")
-    description = models.TextField(verbose_name="Толук маалымат")
-
-    # Сүрөттү түздөн-түз серверге жүктөө (бул үчүн 'Pillow' китепканасы керек)
-    image = models.ImageField(upload_to='tours/', verbose_name="Сүрөт", null=True, blank=True)
-
-    duration = models.CharField(max_length=50, verbose_name="Узактыгы", default="1 күн")
-    is_active = models.BooleanField(default=True, verbose_name="Активдүүбү?")
+    image = models.ImageField(upload_to='tours/', blank=True, null=True, verbose_name="Сүрөт")
     created_at = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        verbose_name = "Тур"
-        verbose_name_plural = "Турлар"
-        ordering = ['-created_at']  # Жаңы кошулган турлар биринчи көрүнөт
-
-    # Бул жерде кичинекей катаңыз бар эле: __clstr__ эмес, __str__ болушу керек
     def __str__(self):
         return self.title
+
+# 2. Заказ модели Турдан БӨЛӨК жана андан КИЙИН жазылышы керек
+class Order(models.Model):
+    tour = models.ForeignKey(Tour, on_delete=models.CASCADE) # Эми Турду тааныйт
+    full_name = models.CharField(max_length=255)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=20, default='pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+    transaction_id = models.CharField(max_length=100, blank=True)
+
+    def __str__(self):
+        return f"Заказ #{self.id} - {self.full_name}"
