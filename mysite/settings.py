@@ -127,22 +127,32 @@ USE_TZ = True
 import os
 from pathlib import Path
 
+# Бул жерде BASE_DIR жогоруда аныкталган болушу керек, бирок коопсуздук үчүн калтырдык
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Сенин азыркы кодуң:
+# 1. Статикалык файлдар (CSS, JS)
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-if not DEBUG:
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
-
+# 2. Медиа файлдар (Сүрөттөр)
 MEDIA_URL = '/media/'
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-# --- МУНУ СӨЗСҮЗ ЭҢ АЯГЫНА КОШ ---
+# 3. Cloudinary жөндөөлөрү
+# ЭСКЕРТҮҮ: API_SECRET деген жерге чыныгы кодуңду жаз!
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'dffggv57z',
     'API_KEY': '159731443338952',
-    'API_SECRET': 'БУЛ_ЖЕРГЕ_ӨЗҮҢДҮН_API_SECRET_КОДУҢДУ_КОЙ' # Жылдызчаларды ачып көчүрүп алган кодуң
+    'API_SECRET': 'CLOUDINARY_URL=cloudinary://<your_api_key>:<your_api_secret>@dffggv57z'
+}
+
+# 4. Django 6.0 үчүн STORAGES жөндөөсү
+# Бул бөлүк эски STATICFILES_STORAGE жөндөөсүн алмаштырат
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "cloudinary_storage.storage.StaticCloudinaryStorage",
+    },
 }
