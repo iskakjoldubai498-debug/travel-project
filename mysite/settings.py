@@ -98,7 +98,7 @@ STORAGES = {
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'dffggv57z',
     'API_KEY': '159731443338952',
-    'API_SECRET': 'БУЛ_ЖЕРГЕ_ӨЗҮҢДҮН_API_SECRET_КОДУҢДУ_ЖАЗ' # <--- URL ЭМЕС, КОДДУ ГАНА ЖАЗ!
+    'API_SECRET': 'CLOUDINARY_URL=cloudinary://<your_api_key>:<your_api_secret>@dffggv57z' # <--- URL ЭМЕС, КОДДУ ГАНА ЖАЗ!
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
