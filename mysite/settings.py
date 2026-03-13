@@ -1,7 +1,10 @@
 import os
 from pathlib import Path
-import dj_database_url
 
+try:
+    import dj_database_url
+except ImportError:
+    dj_database_url = None
 # Проекттин негизги папкасы
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -67,12 +70,14 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # БАЗА ДАННЫХ (DATABASE)
 # Render'де болсо PostgreSQL колдонот, локалдык болсо SQLite колдонот
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL', f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
-        conn_max_age=600
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
+if dj_database_url and os.environ.get('DATABASE_URL'):
+    DATABASES['default'] = dj_database_url.config(conn_max_age=600)
 # Тил жөндөөлөрү (Internationalization)
 LANGUAGE_CODE = 'ky'
 TIME_ZONE = 'UTC'

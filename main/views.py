@@ -15,7 +15,7 @@ def index(request):
 
 # 2. ТУРЛАР БЕТИ (Ката ушул жерден чыгып жаткан)
 def tours(request):
-    tours = Tour.objects.filter(is_active=True)
+    tours = Tour.objects.all()  # Же башка бар болгон талаа менен фильтрлеңиз
     return render(request, 'main/tours.html', {'tours': tours})
 
 # 3. Биз жөнүндө

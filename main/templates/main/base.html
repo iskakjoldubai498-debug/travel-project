@@ -18,54 +18,86 @@
         body { top: 0px !important; position: static !important; }
         #google_translate_element { display: none !important; }
 
-        /* --- НЕГИЗГИ ДИЗАЙН --- */
+        /* --- НЕГИЗГИ Түстөр --- */
         :root {
             --primary-gradient: linear-gradient(45deg, #00d2ff, #3a7bd5);
             --accent-gradient: linear-gradient(45deg, #ff8c00, #ff5e62);
+            --light-grey: #e2e8f0; /* Жаңы боз фон */
             --dark-bg: #0f172a;
             --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(0, 0, 0, 0.05);
         }
 
-        body { font-family: 'Segoe UI', Roboto, sans-serif; transition: 0.4s ease; background-color: #f1f5f9; overflow-x: hidden; }
+        body { font-family: 'Segoe UI', Roboto, sans-serif; transition: 0.4s ease; background-color: #f8fafc; overflow-x: hidden; color: #334155; }
         body.dark-mode { background-color: var(--dark-bg); color: #f1f5f9; }
 
         /* --- NAVBAR --- */
-        .navbar { backdrop-filter: blur(15px); background: rgba(15, 23, 42, 0.95) !important; border-bottom: 1px solid var(--glass-border); padding: 12px 0; z-index: 1050; }
-        .navbar-brand { font-size: 24px; letter-spacing: 1px; color: white !important; }
-
-        /* --- ИЗДӨӨ ФУНКЦИЯСЫ --- */
-        .search-wrapper { display: flex; align-items: center; position: relative; }
-        .search-input-nav {
-            width: 0; height: 42px; border: none; border-radius: 12px; outline: none;
-            background: var(--glass-bg); color: white; transition: all 0.5s ease; opacity: 0;
+        .navbar {
+            backdrop-filter: blur(15px);
+            background: var(--light-grey) !important; /* Күндүзгү боз фон */
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            padding: 8px 0;
+            z-index: 1050;
+            transition: 0.3s;
         }
-        .search-input-nav.active { width: 250px; padding: 0 15px; opacity: 1; border: 1px solid var(--glass-border); }
+        body.dark-mode .navbar { background: rgba(15, 23, 42, 0.95) !important; border-bottom-color: rgba(255,255,255,0.1); }
 
+        .navbar-brand { font-size: 22px; letter-spacing: 1px; color: #0f172a !important; }
+        body.dark-mode .navbar-brand { color: white !important; }
+
+        /* Мобилдик меню */
+        @media (max-width: 991px) {
+            .navbar-collapse {
+                background: var(--light-grey);
+                margin-top: 10px;
+                border-radius: 15px;
+                padding: 15px;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            }
+            body.dark-mode .navbar-collapse { background: #1e293b; }
+            .nav-link { color: #334155 !important; border-bottom: 1px solid rgba(0,0,0,0.05); padding: 10px 0 !important; }
+            body.dark-mode .nav-link { color: white !important; border-bottom-color: rgba(255,255,255,0.1); }
+        }
+
+        .nav-link { color: #475569 !important; font-weight: 500; font-size: 15px; }
+        body.dark-mode .nav-link { color: #cbd5e1 !important; }
+
+        /* --- БАСКЫЧТАРДЫ КИЧИРЕЙТҮҮ --- */
         .nav-control-btn {
-            width: 42px; height: 42px; display: flex; align-items: center; justify-content: center;
-            border-radius: 12px; background: var(--glass-bg); border: 1px solid var(--glass-border); color: white !important;
-            margin-left: 10px; cursor: pointer;
+            width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+            border-radius: 10px; background: rgba(0, 0, 0, 0.05); border: 1px solid rgba(0,0,0,0.05);
+            color: #334155 !important; margin-left: 6px; cursor: pointer; font-size: 14px; transition: 0.3s;
+        }
+        body.dark-mode .nav-control-btn { background: rgba(255, 255, 255, 0.1); color: white !important; border-color: rgba(255,255,255,0.1); }
+
+        .search-input-nav {
+            width: 0; height: 34px; border: none; border-radius: 10px; outline: none;
+            background: rgba(0,0,0,0.05); color: #333; transition: all 0.4s ease; opacity: 0;
+        }
+        body.dark-mode .search-input-nav { background: rgba(255,255,255,0.1); color: white; }
+        .search-input-nav.active { width: 150px; padding: 0 12px; opacity: 1; border: 1px solid rgba(0,0,0,0.1); }
+
+        /* --- ЗАКАЗ ЧАЛУУ --- */
+        .call-request-btn {
+            position: fixed; bottom: 25px; left: 20px; background: var(--accent-gradient); color: white !important;
+            padding: 10px 20px; border-radius: 50px; font-weight: 600; box-shadow: 0 8px 20px rgba(255, 140, 0, 0.3);
+            z-index: 1000; border: none; display: flex; align-items: center; gap: 8px; font-size: 13px;
         }
 
-        /* --- ЗАКАЗ ЧАЛУУ БАСКЫЧЫ --- */
-        .call-request-btn {
-            position: fixed; bottom: 30px; left: 30px; background: var(--accent-gradient); color: white !important;
-            padding: 15px 30px; border-radius: 50px; font-weight: 700; box-shadow: 0 10px 30px rgba(255, 140, 0, 0.4);
-            z-index: 1000; border: none; display: flex; align-items: center; gap: 12px;
-        }
+        .navbar-toggler { color: #333 !important; }
+        body.dark-mode .navbar-toggler { color: white !important; }
     </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <nav class="navbar navbar-expand-lg sticky-top">
         <div class="container">
             <a class="navbar-brand fw-bold" href="{% url 'index' %}">
-                <i class="fas fa-mountain-sun text-primary me-2"></i>TRAVEL<span class="text-primary">KG</span>
+                <i class="fas fa-mountain-sun text-primary me-1"></i>TRAVEL<span class="text-primary">KG</span>
             </a>
 
             <div class="d-flex align-items-center ms-auto order-lg-3">
-                <div class="search-wrapper me-2">
+                <div class="search-wrapper">
                     <form action="{% url 'index' %}" method="GET" id="nav-search-form" class="d-flex align-items-center">
                         <input type="text" name="search_word" id="nav-search-input" class="search-input-nav" placeholder="Издөө...">
                         <button type="button" id="nav-search-btn" class="nav-control-btn"><i class="fas fa-search"></i></button>
@@ -82,12 +114,18 @@
                         <li><a class="dropdown-item" href="javascript:void(0)" onclick="translatePage('en')">English</a></li>
                     </ul>
                 </div>
+
+                <button class="navbar-toggler border-0 p-0 ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <i class="fas fa-bars shadow-none"></i>
+                </button>
             </div>
 
             <div class="collapse navbar-collapse order-lg-2" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link px-3 text-white" href="{% url 'index' %}">Башкы бет</a></li>
-                    <li class="nav-item"><a class="nav-link px-3 text-white" href="{% url 'tours_page' %}">Турлар</a></li>
+                <ul class="navbar-nav ms-auto text-center">
+                    <li class="nav-item"><a class="nav-link px-3" href="{% url 'index' %}">Башкы бет</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="{% url 'tours_page' %}">Турлар</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="{% url 'about' %}">Биз жөнүндө</a></li>
+                    <li class="nav-item"><a class="nav-link px-3" href="{% url 'contact' %}">Байланыш</a></li>
                 </ul>
             </div>
         </div>
@@ -98,24 +136,20 @@
     </main>
 
     <button class="call-request-btn" data-bs-toggle="modal" data-bs-target="#callModal">
-        <i class="fas fa-phone-alt"></i> Заказ чалуу
+        <i class="fas fa-phone-alt"></i> <span>Заказ</span>
     </button>
 
     <div class="modal fade" id="callModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content shadow-lg p-4" style="border-radius: 25px; background: white; color: #333;">
-                <h3 class="fw-bold text-center mb-4">Биз сизге чалабыз!</h3>
+            <div class="modal-content shadow-lg p-4" style="border-radius: 20px; background: white; color: #333;">
+                <div class="text-end"><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <h4 class="fw-bold text-center mb-4">Биз сизге чалабыз!</h4>
                 <form method="POST" action="{% url 'callback_request' %}">
                     {% csrf_token %}
                     <input type="text" name="name" class="form-control mb-3 p-3 rounded-4" placeholder="Атыңыз" required>
                     <input type="text" name="phone" class="form-control mb-3 p-3 rounded-4" placeholder="Телефон номериңиз" required>
                     <button type="submit" class="btn btn-primary w-100 py-3 rounded-4 fw-bold" style="background: var(--primary-gradient); border:none;">ЖӨНӨТҮҮ</button>
                 </form>
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert alert-success mt-3">{{ message }}</div>
-                    {% endfor %}
-                {% endif %}
             </div>
         </div>
     </div>
@@ -147,7 +181,7 @@
             if (select) { select.value = lang; select.dispatchEvent(new Event('change')); }
         }
 
-        // Тема
+        // Тема алмаштыруу
         const themeToggle = document.getElementById('theme-toggle');
         const themeIcon = document.getElementById('theme-icon');
         themeToggle.addEventListener('click', () => {
