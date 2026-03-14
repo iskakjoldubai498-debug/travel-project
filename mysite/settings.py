@@ -2,12 +2,15 @@ import os
 import dj_database_url
 from pathlib import Path
 
+# Пакеттерди алдын ала текшерүү (Python 3.13 үчүн)
+try:
+    import psycopg
+except ImportError:
+    pass
+
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 SECRET_KEY = 'django-insecure-2z*&rg!%vl03^jh=ns6-y1k$u)=$3rgdx%fmh#a2%wjhr)z7j4'
-
-DEBUG = True  # Деплойдон кийин False кылсаңыз болот
-
+DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
@@ -60,9 +63,11 @@ TEMPLATES = [
     },
 ]
 
+# --- БАЗА ЖӨНДӨӨСҮ ---
+# Render'де болсо PostgreSQL, компьютерде болсо SQLite иштетмей кылдык
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgresql://travel_db_9vwk_user:BaH6Vi0JpIypu4Zl6TtSys8CFq1tt5sm@dpg-d6qor3v5gffc73ettia0-a.frankfurt-postgres.render.com/travel_db_9vwk',
+        default=f"sqlite:///{os.path.join(BASE_DIR, 'db.sqlite3')}",
         conn_max_age=600
     )
 }
@@ -87,7 +92,6 @@ CLOUDINARY_STORAGE = {
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# МААНИЛҮҮ: Django 5.1 үчүн бирден бир туура STORAGES жөндөөсү
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
