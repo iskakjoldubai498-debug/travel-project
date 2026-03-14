@@ -45,7 +45,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'travel_kg.urls' # travel_kg сиздин проекттин аты
+ROOT_URLCONF = 'mysite.urls' # travel_kg сиздин проекттин аты
 
 TEMPLATES = [
     {
@@ -64,8 +64,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'travel_kg.wsgi.application'
-
+WSGI_APPLICATION = 'mysite.wsgi.application'
 # БАЗА ДАННЫХ (PostgreSQL кошулду)
 DATABASES = {
     'default': dj_database_url.config(
@@ -104,11 +103,14 @@ CLOUDINARY_STORAGE = {
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # WhiteNoise статика жөндөөсү
-if not DEBUG:
-    STORAGES = {
-        "staticfiles": {
-            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-        },
-    }
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "cloudinary_storage.storage.StaticCloudinaryStorage",
+    },
+}
