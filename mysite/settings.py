@@ -68,7 +68,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
 # БАЗА ДАННЫХ (DATABASE)
-# Render'де болсо PostgreSQL колдонот, локалдык болсо SQLite колдонот
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -76,9 +75,14 @@ DATABASES = {
     }
 }
 
+# Эгер серверде (Render) болсок, PostgreSQL'ге туташуу
 if dj_database_url and os.environ.get('DATABASE_URL'):
-    DATABASES['default'] = dj_database_url.config(conn_max_age=600)
-# Тил жөндөөлөрү (Internationalization)
+    DATABASES['default'] = dj_database_url.config(
+        conn_max_age=600,
+        conn_health_checks=True
+    )
+
+# Тил жөндөөлөрү (Бул блоктон ТЫШКАРЫ болушу керек, баардык жерде иштеши үчүн)
 LANGUAGE_CODE = 'ky'
 TIME_ZONE = 'UTC'
 USE_I18N = True

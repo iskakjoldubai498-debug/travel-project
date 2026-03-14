@@ -11,81 +11,177 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
-        /* --- 1. GOOGLE TRANSLATE ЖАШЫРУУ --- */
-        .goog-te-banner-frame.skiptranslate, .goog-te-banner, #goog-gt-tt, .goog-te-balloon-frame, .skiptranslate {
-            display: none !important; visibility: hidden !important;
-        }
-        body { top: 0px !important; position: static !important; }
-        #google_translate_element { display: none !important; }
-
-        /* --- НЕГИЗГИ Түстөр --- */
+        /* --- НЕГИЗГИ ӨЗГӨРМӨЛӨР --- */
         :root {
-            --primary-gradient: linear-gradient(45deg, #00d2ff, #3a7bd5);
-            --accent-gradient: linear-gradient(45deg, #ff8c00, #ff5e62);
-            --light-grey: #e2e8f0; /* Жаңы боз фон */
+            --primary-blue: #3a7bd5;
+            --accent-orange: #ff8c00;
+            --light-bg: #f8fafc;
+            --navbar-light: #e2e8f0;
             --dark-bg: #0f172a;
-            --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(0, 0, 0, 0.05);
+            --card-dark: #1e293b;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        body { font-family: 'Segoe UI', Roboto, sans-serif; transition: 0.4s ease; background-color: #f8fafc; overflow-x: hidden; color: #334155; }
-        body.dark-mode { background-color: var(--dark-bg); color: #f1f5f9; }
+        /* --- БАЗАЛЫК СТИЛЬ --- */
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--light-bg);
+            color: #334155;
+            transition: var(--transition);
+            overflow-x: hidden;
+        }
+
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: #f1f5f9;
+        }
 
         /* --- NAVBAR --- */
         .navbar {
             backdrop-filter: blur(15px);
-            background: var(--light-grey) !important; /* Күндүзгү боз фон */
-            border-bottom: 1px solid rgba(0,0,0,0.1);
-            padding: 8px 0;
-            z-index: 1050;
-            transition: 0.3s;
-        }
-        body.dark-mode .navbar { background: rgba(15, 23, 42, 0.95) !important; border-bottom-color: rgba(255,255,255,0.1); }
-
-        .navbar-brand { font-size: 22px; letter-spacing: 1px; color: #0f172a !important; }
-        body.dark-mode .navbar-brand { color: white !important; }
-
-        /* Мобилдик меню */
-        @media (max-width: 991px) {
-            .navbar-collapse {
-                background: var(--light-grey);
-                margin-top: 10px;
-                border-radius: 15px;
-                padding: 15px;
-                box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            }
-            body.dark-mode .navbar-collapse { background: #1e293b; }
-            .nav-link { color: #334155 !important; border-bottom: 1px solid rgba(0,0,0,0.05); padding: 10px 0 !important; }
-            body.dark-mode .nav-link { color: white !important; border-bottom-color: rgba(255,255,255,0.1); }
+            background: rgba(226, 232, 240, 0.9) !important;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 10px 0;
+            transition: var(--transition);
         }
 
-        .nav-link { color: #475569 !important; font-weight: 500; font-size: 15px; }
-        body.dark-mode .nav-link { color: #cbd5e1 !important; }
-
-        /* --- БАСКЫЧТАРДЫ КИЧИРЕЙТҮҮ --- */
-        .nav-control-btn {
-            width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
-            border-radius: 10px; background: rgba(0, 0, 0, 0.05); border: 1px solid rgba(0,0,0,0.05);
-            color: #334155 !important; margin-left: 6px; cursor: pointer; font-size: 14px; transition: 0.3s;
+        body.dark-mode .navbar {
+            background: rgba(15, 23, 42, 0.9) !important;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
         }
-        body.dark-mode .nav-control-btn { background: rgba(255, 255, 255, 0.1); color: white !important; border-color: rgba(255,255,255,0.1); }
+
+       /* --- ЛОГОТИПТИН КӨРҮНҮШҮН ОҢДОО --- */
+/* Күндүзгү режимде */
+.navbar-brand {
+    color: #0f172a !important; /* Кара түс */
+    transition: var(--transition);
+}
+
+/* Түн режиминде логотипти ак кылуу */
+body.dark-mode .navbar-brand {
+    color: #ffffff !important; /* Ак түс */
+}
+
+/* Логотиптин ичиндеги "KG" деген жазууну түн ичинде ачык көк кылуу */
+body.dark-mode .navbar-brand .text-primary {
+    color: #3fb6ff !important;
+}
+
+/* Мобилдик менюнун "гамбургер" баскычын түн ичинде ак кылуу */
+body.dark-mode .navbar-toggler {
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+body.dark-mode .navbar-toggler i {
+    color: #ffffff !important;
+}
+
+        /* --- КҮЧТҮҮ ИЗДӨӨ ФУНКЦИЯСЫ --- */
+        .search-wrapper { position: relative; }
+
+        .nav-search-container {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 50px;
+            padding: 2px 5px;
+            width: 40px; /* Баштапкы абалы */
+            height: 40px;
+            transition: var(--transition);
+            border: 1px solid transparent;
+            overflow: hidden;
+        }
+
+        body.dark-mode .nav-search-container { background: rgba(255, 255, 255, 0.1); }
+
+        .nav-search-container.active {
+            width: 280px;
+            background: white;
+            border-color: var(--primary-blue);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode .nav-search-container.active {
+            background: var(--card-dark);
+            border-color: var(--primary-blue);
+        }
 
         .search-input-nav {
-            width: 0; height: 34px; border: none; border-radius: 10px; outline: none;
-            background: rgba(0,0,0,0.05); color: #333; transition: all 0.4s ease; opacity: 0;
+            width: 0;
+            border: none;
+            background: transparent;
+            outline: none;
+            font-size: 15px;
+            color: inherit;
+            padding: 0;
+            transition: var(--transition);
         }
-        body.dark-mode .search-input-nav { background: rgba(255,255,255,0.1); color: white; }
-        .search-input-nav.active { width: 150px; padding: 0 12px; opacity: 1; border: 1px solid rgba(0,0,0,0.1); }
 
-        /* --- ЗАКАЗ ЧАЛУУ --- */
+        .nav-search-container.active .search-input-nav {
+            width: 100%;
+            padding: 0 15px;
+        }
+
+        .nav-control-btn {
+            width: 36px; height: 36px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 50%;
+            border: none;
+            background: transparent;
+            color: #475569;
+            transition: var(--transition);
+        }
+
+        body.dark-mode .nav-control-btn { color: #f1f5f9; }
+        .nav-control-btn:hover { background: rgba(0,0,0,0.05); transform: scale(1.1); }
+        body.dark-mode .nav-control-btn:hover { background: rgba(255,255,255,0.1); }
+
+      /* --- МОБИЛДИК МЕНЮДА ТЕКСТТИ КӨРСӨТҮҮ --- */
+@media (max-width: 991px) {
+    /* Күндүзгү режимде менюдагы шилтемелер */
+    .navbar-collapse .nav-link {
+        color: #334155 !important; /* Кара сыяктуу боз */
+        padding: 12px;
+        border-radius: 10px;
+    }
+
+    /* Түн режиминде менюдагы шилтемелер */
+    body.dark-mode .navbar-collapse .nav-link {
+        color: #f1f5f9 !important; /* Ак түс */
+    }
+
+    /* Түн режиминде меню ачылгандагы фонду тактоо */
+    body.dark-mode .navbar-collapse {
+        background-color: #1e293b !important; /* Кочкул көк/кара фон */
+        border: 1px solid rgba(255,255,255,0.1);
+        padding: 15px;
+        margin-top: 10px;
+    }
+}
+
+/* Компьютерде да түн режиминде текстти ак кылуу */
+body.dark-mode .nav-link {
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode .nav-link:hover {
+    color: #ffffff !important;
+}
+
+        /* --- БАСКЫЧТАР --- */
         .call-request-btn {
-            position: fixed; bottom: 25px; left: 20px; background: var(--accent-gradient); color: white !important;
-            padding: 10px 20px; border-radius: 50px; font-weight: 600; box-shadow: 0 8px 20px rgba(255, 140, 0, 0.3);
-            z-index: 1000; border: none; display: flex; align-items: center; gap: 8px; font-size: 13px;
+            position: fixed; bottom: 30px; left: 30px;
+            background: linear-gradient(45deg, var(--accent-orange), #ff5e62);
+            color: white !important; padding: 12px 25px; border-radius: 50px;
+            font-weight: 600; box-shadow: 0 10px 20px rgba(255, 140, 0, 0.3);
+            z-index: 1000; border: none; transition: 0.3s;
         }
+        .call-request-btn:hover { transform: translateY(-5px); box-shadow: 0 15px 25px rgba(255, 140, 0, 0.4); }
 
-        .navbar-toggler { color: #333 !important; }
-        body.dark-mode .navbar-toggler { color: white !important; }
+        /* Google Translate Жашыруу */
+        .goog-te-banner-frame, .skiptranslate, #google_translate_element { display: none !important; }
+        body { top: 0px !important; }
     </style>
 </head>
 
@@ -97,26 +193,36 @@
             </a>
 
             <div class="d-flex align-items-center ms-auto order-lg-3">
-                <div class="search-wrapper">
-                    <form action="{% url 'index' %}" method="GET" id="nav-search-form" class="d-flex align-items-center">
-                        <input type="text" name="search_word" id="nav-search-input" class="search-input-nav" placeholder="Издөө...">
-                        <button type="button" id="nav-search-btn" class="nav-control-btn"><i class="fas fa-search"></i></button>
+
+                <div class="search-wrapper me-2">
+                    <form action="{% url 'index' %}" method="GET" id="nav-search-form">
+                        <div class="nav-search-container" id="search-container">
+                            <input type="text" name="search_word" id="nav-search-input"
+                                   class="search-input-nav" placeholder="Издөө...">
+                            <button type="button" id="nav-search-btn" class="nav-control-btn">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
                     </form>
                 </div>
 
-                <button id="theme-toggle" class="nav-control-btn"><i id="theme-icon" class="fas fa-moon"></i></button>
+                <button id="theme-toggle" class="nav-control-btn me-2">
+                    <i id="theme-icon" class="fas fa-moon"></i>
+                </button>
 
                 <div class="dropdown">
-                    <button class="nav-control-btn" data-bs-toggle="dropdown"><i class="fas fa-globe"></i></button>
-                    <ul class="dropdown-menu dropdown-menu-end p-2 shadow border-0">
-                        <li><a class="dropdown-item" href="javascript:void(0)" onclick="translatePage('ky')">Кыргызча</a></li>
-                        <li><a class="dropdown-item" href="javascript:void(0)" onclick="translatePage('ru')">Русский</a></li>
-                        <li><a class="dropdown-item" href="javascript:void(0)" onclick="translatePage('en')">English</a></li>
+                    <button class="nav-control-btn" data-bs-toggle="dropdown">
+                        <i class="fas fa-globe"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-2" style="border-radius: 12px;">
+                        <li><a class="dropdown-item rounded-3" href="javascript:void(0)" onclick="translatePage('ky')">Кыргызча</a></li>
+                        <li><a class="dropdown-item rounded-3" href="javascript:void(0)" onclick="translatePage('ru')">Русский</a></li>
+                        <li><a class="dropdown-item rounded-3" href="javascript:void(0)" onclick="translatePage('en')">English</a></li>
                     </ul>
                 </div>
 
-                <button class="navbar-toggler border-0 p-0 ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <i class="fas fa-bars shadow-none"></i>
+                <button class="navbar-toggler border-0 ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <i class="fas fa-bars"></i>
                 </button>
             </div>
 
@@ -131,24 +237,28 @@
         </div>
     </nav>
 
-    <main class="py-4">
+    <main>
         {% block content %}{% endblock %}
     </main>
 
     <button class="call-request-btn" data-bs-toggle="modal" data-bs-target="#callModal">
-        <i class="fas fa-phone-alt"></i> <span>Заказ</span>
+        <i class="fas fa-phone-alt me-2"></i><span>Байланыш</span>
     </button>
 
     <div class="modal fade" id="callModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content shadow-lg p-4" style="border-radius: 20px; background: white; color: #333;">
+            <div class="modal-content shadow-lg p-4 border-0" style="border-radius: 25px;">
                 <div class="text-end"><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-                <h4 class="fw-bold text-center mb-4">Биз сизге чалабыз!</h4>
+                <h3 class="fw-bold text-center mb-4">Биз сизге чалабыз</h3>
                 <form method="POST" action="{% url 'callback_request' %}">
                     {% csrf_token %}
-                    <input type="text" name="name" class="form-control mb-3 p-3 rounded-4" placeholder="Атыңыз" required>
-                    <input type="text" name="phone" class="form-control mb-3 p-3 rounded-4" placeholder="Телефон номериңиз" required>
-                    <button type="submit" class="btn btn-primary w-100 py-3 rounded-4 fw-bold" style="background: var(--primary-gradient); border:none;">ЖӨНӨТҮҮ</button>
+                    <div class="mb-3">
+                        <input type="text" name="name" class="form-control p-3 border-0 bg-light rounded-4" placeholder="Атыңыз" required>
+                    </div>
+                    <div class="mb-4">
+                        <input type="text" name="phone" class="form-control p-3 border-0 bg-light rounded-4" placeholder="Телефон номериңиз" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 py-3 rounded-4 fw-bold shadow">ЖӨНӨТҮҮ</button>
                 </form>
             </div>
         </div>
@@ -158,32 +268,37 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <script>
-        // Издөө логикасы
-        const navSearchBtn = document.getElementById('nav-search-btn');
-        const navSearchInput = document.getElementById('nav-search-input');
-        navSearchBtn.addEventListener('click', () => {
-            if (!navSearchInput.classList.contains('active')) {
-                navSearchInput.classList.add('active'); navSearchInput.focus();
-            } else if (navSearchInput.value.trim() !== "") {
-                document.getElementById('nav-search-form').submit();
+        // --- 1. Күчтүү издөө логикасы ---
+        const searchBtn = document.getElementById('nav-search-btn');
+        const searchInput = document.getElementById('nav-search-input');
+        const searchContainer = document.getElementById('search-container');
+        const searchForm = document.getElementById('nav-search-form');
+
+        searchBtn.addEventListener('click', () => {
+            if (!searchContainer.classList.contains('active')) {
+                searchContainer.classList.add('active');
+                searchInput.focus();
+            } else if (searchInput.value.trim() !== "") {
+                searchForm.submit();
+            } else {
+                searchContainer.classList.remove('active');
             }
         });
 
-        // Котормо
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({pageLanguage: 'ky', includedLanguages: 'ky,ru,en', autoDisplay: false}, 'google_translate_element');
-        }
-        function translatePage(lang) {
-            const select = document.querySelector("select.goog-te-combo");
-            if (select) { select.value = lang; select.dispatchEvent(new Event('change')); }
-        }
+        // Башка жакты басканда издөөнү жабуу
+        document.addEventListener('click', (e) => {
+            if (!searchContainer.contains(e.target) && searchInput.value === "") {
+                searchContainer.classList.remove('active');
+            }
+        });
 
-        // Тема алмаштыруу
+        // --- 2. Күн/Түн режими ---
         const themeToggle = document.getElementById('theme-toggle');
         const themeIcon = document.getElementById('theme-icon');
+
         themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('dark-mode');
             const isDark = document.body.classList.contains('dark-mode');
@@ -195,7 +310,21 @@
             document.body.classList.add('dark-mode');
             themeIcon.className = 'fas fa-sun';
         }
-        AOS.init();
+
+        // --- 3. Котормо ---
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'ky', includedLanguages: 'ky,ru,en'}, 'google_translate_element');
+        }
+        function translatePage(lang) {
+            const select = document.querySelector("select.goog-te-combo");
+            if (select) {
+                select.value = lang;
+                select.dispatchEvent(new Event('change'));
+            }
+        }
+
+        // --- 4. Анимация ---
+        AOS.init({ duration: 800, once: true });
     </script>
 </body>
 </html>
