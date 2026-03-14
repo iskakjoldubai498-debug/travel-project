@@ -29,8 +29,10 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'cloudinary_storage',         # Кошулду
     'whitenoise.runserver_nostatic',  # Статика үчүн
     'django.contrib.staticfiles',
+    'cloudinary',                 # Кошулду
     'main',
 ]
 
@@ -103,6 +105,16 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# Cloudinary жөндөөлөрү
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dtuyalp6m',
+    'API_KEY': '636667862685854',
+    'API_SECRET': 'PgRp9Z7dBhdkoVTk0K1sa1I1390',
+}
+
+# Сүрөттөр үчүн сактагычты алмаштыруу
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 # WhiteNoise статикалык файлдарды серверде сактоо жөндөөсү
 if not DEBUG:
     STORAGES = {
@@ -112,3 +124,20 @@ if not DEBUG:
     }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# Эң аягында калсын
+from django.db import connection
+
+def create_admin():
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
+    # Базада таблица бар экенин текшерет
+    if "auth_user" in connection.introspection.table_names():
+        if not User.objects.filter(username='admin').exists():
+            User.objects.create_superuser('admin', 'iskakjoldubai498@gmail.com', '12345678')
+            print("Администратор ийгиликтүү түзүлдү!")
+
+# Кодду иштетүү (бул жерде ката болсо сайт өчпөшү үчүн try-except ичинде)
+try:
+    create_admin()
+except Exception as e:
+    print(f"Админ түзүүдө ката: {e}")
