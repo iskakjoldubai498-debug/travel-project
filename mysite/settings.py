@@ -2,26 +2,21 @@ import os
 import dj_database_url
 from pathlib import Path
 
-# Проекттин негизги папкасы
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Коопсуздук жөндөөлөрү
 SECRET_KEY = 'django-insecure-2z*&rg!%vl03^jh=ns6-y1k$u)=$3rgdx%fmh#a2%wjhr)z7j4'
 
-# DEBUG: Render'де False болушу керек
-DEBUG = True
+DEBUG = True  # Деплойдон кийин False кылсаңыз болот
 
 ALLOWED_HOSTS = ['*']
 
-# CSRF үчүн ишенимдүү шилтемелер
 CSRF_TRUSTED_ORIGINS = [
     'https://travel-kg-5.onrender.com',
     'https://travel-project-9.onrender.com'
 ]
 
-# Тиркемелер
 INSTALLED_APPS = [
-    'cloudinary_storage',         # Сөзсүз staticfiles'тан жогору турушу керек
+    'cloudinary_storage',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,7 +40,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'mysite.urls' # travel_kg сиздин проекттин аты
+ROOT_URLCONF = 'mysite.urls'
+WSGI_APPLICATION = 'mysite.wsgi.application'
 
 TEMPLATES = [
     {
@@ -64,8 +60,6 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'mysite.wsgi.application'
-# БАЗА ДАННЫХ (PostgreSQL кошулду)
 DATABASES = {
     'default': dj_database_url.config(
         default='postgresql://travel_db_9vwk_user:BaH6Vi0JpIypu4Zl6TtSys8CFq1tt5sm@dpg-d6qor3v5gffc73ettia0-a.frankfurt-postgres.render.com/travel_db_9vwk',
@@ -73,24 +67,15 @@ DATABASES = {
     )
 }
 
-# Тил жөндөөлөрү
 LANGUAGE_CODE = 'ky'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-LANGUAGES = [
-    ('ky', 'Kyrgyz'),
-    ('ru', 'Russian'),
-    ('en', 'English'),
-]
-
-# Статикалык файлдар
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
-# Медиа файлдар (Cloudinary)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -100,17 +85,14 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': 'PgRp9Z7dBhdkoVTk0K1sa1I1390',
 }
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-# WhiteNoise статика жөндөөсү
-
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# МААНИЛҮҮ: Django 5.1 үчүн бирден бир туура STORAGES жөндөөсү
 STORAGES = {
     "default": {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
-        "BACKEND": "cloudinary_storage.storage.StaticCloudinaryStorage",
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
