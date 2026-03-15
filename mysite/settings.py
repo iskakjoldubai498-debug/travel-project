@@ -8,7 +8,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
-
+    'https://travel-kg-5.onrender.com',
     'https://travel-project-9.onrender.com'
 ]
 
